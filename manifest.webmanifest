@@ -1,0 +1,26 @@
+{
+  "id": "/biblioteca-en-voz/",
+  "name": "Biblioteca en Voz — Escucha tus PDF",
+  "short_name": "Biblioteca en Voz",
+  "description": "Selecciona un PDF de tu dispositivo y escúchalo en voz alta.",
+  "lang": "es-MX",
+  "start_url": "/biblioteca-en-voz/",
+  "scope": "/biblioteca-en-voz/",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#153c65",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

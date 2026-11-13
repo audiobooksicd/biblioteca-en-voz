@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#153c65">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>Biblioteca en Voz | Escucha documentos PDF</title>
   <style>
   :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1b2c42;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}header{background:#153c65;color:white;padding:22px max(18px,calc((100vw - 1100px)/2))}header .brand{font-size:1.45rem;font-weight:800}header p{margin:5px 0 0;color:#e1ebf6}main{max-width:1100px;margin:0 auto;padding:30px 18px 50px}.intro{margin-bottom:23px}.intro h1{font-size:clamp(1.6rem,3vw,2.4rem);margin:0 0 8px}.intro p{color:#516276;max-width:730px;line-height:1.6}.search{width:100%;font:inherit;padding:14px;border-radius:12px;border:1px solid #c8d3e0;background:white;margin-bottom:20px}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,420px);gap:22px;align-items:start}.panel{background:white;border-radius:18px;box-shadow:0 5px 22px #193d6510;padding:22px}.panel h2{font-size:1.15rem;margin:0 0 16px}.books{display:grid;gap:13px}.book{border:1px solid #d7e1ee;border-radius:13px;padding:15px;display:flex;gap:12px;justify-content:space-between;align-items:center}.book strong{display:block}.book small{display:block;color:#65778a;margin-top:6px}.book button,.primary{border:0;border-radius:9px;background:#17619a;color:white;padding:10px 14px;cursor:pointer;font:inherit;font-weight:650}.book button:hover,.primary:hover{background:#114b77}button:disabled{opacity:.46;cursor:not-allowed}.reader h3{margin:0 0 6px;font-size:1.1rem}.muted{color:#63738a;font-size:.92rem}.status{margin:18px 0;background:#edf5fb;padding:12px;border-radius:10px;min-height:48px;line-height:1.5}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}.controls button{font:inherit;border:1px solid #bccddd;background:#f7fbff;color:#153c65;border-radius:9px;padding:9px 12px;cursor:pointer}.controls button:disabled{opacity:.4;cursor:not-allowed}.formrow{display:grid;gap:6px;margin-top:14px}.formrow label{font-size:.88rem;font-weight:700}select{width:100%;padding:10px;border:1px solid #c7d3df;border-radius:9px;background:white;font:inherit}.preview{white-space:pre-wrap;word-break:break-word;max-height:260px;overflow:auto;border:1px solid #e0e8f2;padding:15px;border-radius:10px;font-size:.93rem;line-height:1.55;color:#44566e}.note{margin-top:20px;line-height:1.6;color:#5d6d80;font-size:.87rem}footer{text-align:center;color:#63738a;padding:25px;font-size:.85rem}@media(max-width:800px){.layout{grid-template-columns:1fr}.panel{padding:17px}header{padding:22px 18px}}
@@ -62,6 +65,11 @@ $('resume').addEventListener('click',()=>{if(synth?.paused){synth.resume();setSt
 $('stop').addEventListener('click',()=>{stop();setStatus('Lectura detenida. Pulsa Reproducir para comenzar desde esta página.');});
 $('page').addEventListener('change',()=>{stop();currentPage=Number($('page').value);updatePreview();setStatus(`Página ${currentPage+1} seleccionada. Pulsa Reproducir.`);});
 window.addEventListener('pagehide',stop);
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(e => console.warn("No se pudo registrar el modo sin conexión",e)));
+}
 </script>
 </body>
 </html>

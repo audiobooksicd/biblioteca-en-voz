@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153c65">
+  <title>Biblioteca en Voz | Escucha documentos PDF</title>
+  <style>
+  :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1b2c42;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}header{background:#153c65;color:white;padding:22px max(18px,calc((100vw - 1100px)/2))}header .brand{font-size:1.45rem;font-weight:800}header p{margin:5px 0 0;color:#e1ebf6}main{max-width:1100px;margin:0 auto;padding:30px 18px 50px}.intro{margin-bottom:23px}.intro h1{font-size:clamp(1.6rem,3vw,2.4rem);margin:0 0 8px}.intro p{color:#516276;max-width:730px;line-height:1.6}.search{width:100%;font:inherit;padding:14px;border-radius:12px;border:1px solid #c8d3e0;background:white;margin-bottom:20px}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,420px);gap:22px;align-items:start}.panel{background:white;border-radius:18px;box-shadow:0 5px 22px #193d6510;padding:22px}.panel h2{font-size:1.15rem;margin:0 0 16px}.books{display:grid;gap:13px}.book{border:1px solid #d7e1ee;border-radius:13px;padding:15px;display:flex;gap:12px;justify-content:space-between;align-items:center}.book strong{display:block}.book small{display:block;color:#65778a;margin-top:6px}.book button,.primary{border:0;border-radius:9px;background:#17619a;color:white;padding:10px 14px;cursor:pointer;font:inherit;font-weight:650}.book button:hover,.primary:hover{background:#114b77}button:disabled{opacity:.46;cursor:not-allowed}.reader h3{margin:0 0 6px;font-size:1.1rem}.muted{color:#63738a;font-size:.92rem}.status{margin:18px 0;background:#edf5fb;padding:12px;border-radius:10px;min-height:48px;line-height:1.5}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}.controls button{font:inherit;border:1px solid #bccddd;background:#f7fbff;color:#153c65;border-radius:9px;padding:9px 12px;cursor:pointer}.controls button:disabled{opacity:.4;cursor:not-allowed}.formrow{display:grid;gap:6px;margin-top:14px}.formrow label{font-size:.88rem;font-weight:700}select{width:100%;padding:10px;border:1px solid #c7d3df;border-radius:9px;background:white;font:inherit}.preview{white-space:pre-wrap;word-break:break-word;max-height:260px;overflow:auto;border:1px solid #e0e8f2;padding:15px;border-radius:10px;font-size:.93rem;line-height:1.55;color:#44566e}.note{margin-top:20px;line-height:1.6;color:#5d6d80;font-size:.87rem}footer{text-align:center;color:#63738a;padding:25px;font-size:.85rem}@media(max-width:800px){.layout{grid-template-columns:1fr}.panel{padding:17px}header{padding:22px 18px}}
+  .upload{margin:0 0 22px;background:#fff;border:2px dashed #9ab8d7;border-radius:18px;padding:23px;text-align:center}.upload h2{margin:0 0 8px;font-size:1.2rem}.upload p{color:#526981;line-height:1.5}.upload input{max-width:100%;font:inherit}.upload .hint{font-size:.85rem}.upload:focus-within{border-color:#17619a;outline:2px solid #d2e7ff}.upload .filepick{display:inline-block;background:#17619a;color:white;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:700}.upload .filepick:focus-within{outline:2px solid #17619a;outline-offset:3px}.upload .filepick input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}.upload .filepick:focus-within{outline:2px solid #17619a;outline-offset:3px}
+  </style>
+</head>
+<body>
+<header><div class="brand">📚 Biblioteca en Voz</div><p>Documentos para leer, comprender y escuchar.</p></header>
+<main>
+  <div class="intro"><h1>Una biblioteca que también se escucha</h1><p>Explora documentos públicos o selecciona tu propio PDF desde tu dispositivo y escúchalo en voz alta. No necesitas instalar nada ni crear una cuenta.</p></div>
+  <section class="upload" aria-labelledby="uploadTitle"><h2 id="uploadTitle">📄 Escucha tu propio PDF</h2><p>Selecciona un archivo PDF de tu celular o computadora. Se leerá aquí mismo, sin subirlo a internet ni compartirlo con otros visitantes.</p><label class="filepick" for="localPdf">📁 Seleccionar archivo PDF<input type="file" id="localPdf" accept=".pdf,application/pdf" aria-label="Seleccionar un PDF de mi dispositivo"></label><p class="hint">Gratis y privado · Funciona con PDFs que contengan texto seleccionable · Las voces dependen de tu dispositivo.</p></section>
+  <input id="search" class="search" type="search" placeholder="Buscar por título o categoría…" aria-label="Buscar documentos">
+  <div class="layout">
+    <section class="panel"><h2>Documentos disponibles</h2><div id="books" class="books"></div></section>
+    <section class="panel reader" aria-label="Reproductor">
+      <h2>🎧 Reproductor de lectura</h2><h3 id="selectedTitle">Elige un documento</h3><div class="muted" id="selectedMeta">Selecciona “Escuchar” en la biblioteca.</div>
+      <div id="status" class="status" role="status" aria-live="polite">El reproductor está preparado.</div>
+      <div class="controls"><button id="play" disabled>▶ Reproducir</button><button id="pause" disabled>⏸ Pausar</button><button id="resume" disabled>↪ Continuar</button><button id="stop" disabled>■ Detener</button></div>
+      <div class="formrow"><label for="voice">Voz</label><select id="voice"><option value="">Voz predeterminada</option></select></div>
+      <div class="formrow"><label for="speed">Velocidad</label><select id="speed"><option value="0.8">Lenta (0.8×)</option><option value="1" selected>Normal (1×)</option><option value="1.25">Rápida (1.25×)</option><option value="1.5">Muy rápida (1.5×)</option></select></div>
+      <div class="formrow"><label for="page">Página desde la que escuchar</label><select id="page" disabled><option>Selecciona un documento</option></select></div>
+      <p class="muted">Vista del texto extraído:</p><div id="preview" class="preview">Aquí aparecerá el contenido del PDF seleccionado.</div>
+    </section>
+  </div>
+  <p class="note">Aviso: los PDF que selecciones desde tu dispositivo se procesan localmente y no se publican ni se envían al repositorio. La lectura de voz utiliza la tecnología de tu navegador, por lo que las voces y el funcionamiento pueden variar entre dispositivos. Los archivos escaneados sin texto seleccionable necesitarán OCR. Publica únicamente documentos que tengas derecho a distribuir.</p>
+</main>
+<footer>Biblioteca en Voz · Acceso público y gratuito</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+'use strict';
+// AGREGA AQUÍ LOS DOCUMENTOS PÚBLICOS QUE SUBAS A LA CARPETA documentos.
+// Ejemplo (quita las dos barras // antes del objeto cuando subas el PDF):
+// { titulo: 'Mi primer documento', categoria: 'Leyes', archivo: 'documentos/mi-primer-documento.pdf' },
+const DOCUMENTOS = [
+];
+const $=id=>document.getElementById(id);
+const books=$('books'),search=$('search'),status=$('status'),preview=$('preview');
+const synth=window.speechSynthesis;
+let pages=[],currentPage=0,parts=[],partIndex=0,token=0,voices=[],activeFile=null;
+if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+function setStatus(t){status.textContent=t;}
+function render(){const q=search.value.trim().toLowerCase();books.replaceChildren();const filtered=DOCUMENTOS.filter(d=>(d.titulo+' '+d.categoria).toLowerCase().includes(q));if(!filtered.length){const p=document.createElement('p');p.className='muted';p.textContent=DOCUMENTOS.length?'No encontramos documentos con ese nombre.':'Tu biblioteca aún no tiene documentos publicados. La administradora podrá agregarlos desde GitHub.';books.append(p);return;}filtered.forEach(doc=>{const card=document.createElement('div');card.className='book';const text=document.createElement('div');const title=document.createElement('strong');title.textContent=doc.titulo;const meta=document.createElement('small');meta.textContent=doc.categoria+' · PDF';text.append(title,meta);const btn=document.createElement('button');btn.textContent='Escuchar';btn.addEventListener('click',()=>loadDoc(doc));card.append(text,btn);books.append(card);});}
+search.addEventListener('input',render);render();
+$('localPdf').addEventListener('change', async event=>{const file=event.target.files?.[0];if(!file)return;if(!/\.pdf$/i.test(file.name)&&file.type!=='application/pdf'){setStatus('Selecciona un archivo PDF válido.');return;}await loadDoc({titulo:file.name,categoria:'PDF de tu dispositivo (privado)',localFile:file});});
+function stop(){token++;if(synth)synth.cancel();parts=[];partIndex=0;}
+function controls(on){['play','pause','resume','stop'].forEach(x=>$(x).disabled=!on);}
+async function loadDoc(doc){stop();const loadToken=token;activeFile=doc.localFile ? null : doc.archivo;pages=[];currentPage=0;controls(false);$('page').disabled=true;$('selectedTitle').textContent=doc.titulo;$('selectedMeta').textContent=doc.categoria+' · PDF';preview.textContent='Extrayendo texto…';setStatus('Abriendo PDF…');if(!window.pdfjsLib){setStatus('No se pudo cargar el lector de PDF. Revisa tu conexión a internet.');return;}try{const source=doc.localFile?{data:new Uint8Array(await doc.localFile.arrayBuffer())}:{url:encodeURI(doc.archivo)};if(loadToken!==token)return;const pdf=await pdfjsLib.getDocument(source).promise;for(let i=1;i<=pdf.numPages;i++){if(loadToken!==token)return;const p=await pdf.getPage(i);const content=await p.getTextContent();let s='';for(const item of content.items){s+=item.str+(item.hasEOL?'\n':' ');}pages.push(s.trim());}if(loadToken!==token)return;const selector=$('page');selector.replaceChildren();pages.forEach((_,i)=>{const op=document.createElement('option');op.value=String(i);op.textContent=`Página ${i+1}`;selector.append(op);});selector.disabled=false;controls(true);updatePreview();setStatus(`Documento listo: ${pages.length} página(s). Pulsa Reproducir.`);}catch(e){console.error(e);preview.textContent='No se pudo abrir este documento.';setStatus(doc.localFile?'No pudimos leer ese PDF. Comprueba que no esté protegido con contraseña o dañado.':'Error al abrir PDF. Confirma que el archivo exista en la carpeta documentos y que su nombre coincida.');}}
+function updatePreview(){preview.textContent=pages[currentPage]||'Esta página no contiene texto seleccionable. Puede tratarse de un escaneo.';$('page').value=String(currentPage);}
+function segment(t){const chunks=[];const sentences=t.replace(/\s+/g,' ').trim().match(/[^.!?;:]+[.!?;:]?\s*/g)||[];let cur='';for(const s of sentences){if((cur+s).length>170&&cur){chunks.push(cur);cur='';}if(s.length>170){for(let i=0;i<s.length;i+=160){if(cur){chunks.push(cur);cur='';}chunks.push(s.slice(i,i+160));}}else cur+=s;}if(cur)chunks.push(cur);return chunks;}
+function populateVoices(){if(!synth)return;const selected=$('voice').value;voices=synth.getVoices();$('voice').replaceChildren();const def=document.createElement('option');def.value='';def.textContent='Predeterminada del dispositivo';$('voice').append(def);voices.forEach((v,i)=>{const op=document.createElement('option');op.value=String(i);op.textContent=v.name+' ('+v.lang+')';$('voice').append(op);});if([...$('voice').options].some(o=>o.value===selected))$('voice').value=selected;else{const es=voices.findIndex(v=>/^es(-|$)/i.test(v.lang));if(es>=0)$('voice').value=String(es);}}
+if(synth){populateVoices();synth.onvoiceschanged=populateVoices;}else{setStatus('Este navegador no permite reproducción de voz. Prueba Chrome o Edge actualizado.');}
+function speakNext(run){if(run!==token)return;if(partIndex>=parts.length){currentPage++;if(currentPage>=pages.length){setStatus('Lectura terminada.');return;}updatePreview();parts=segment(pages[currentPage]);partIndex=0;if(!parts.length){speakNext(run);return;}}const utterance=new SpeechSynthesisUtterance(parts[partIndex++]);const selected=$('voice').value;if(selected!==''&&voices[Number(selected)])utterance.voice=voices[Number(selected)];utterance.lang=utterance.voice?.lang||'es-MX';utterance.rate=Number($('speed').value);utterance.onend=()=>speakNext(run);utterance.onerror=e=>{if(run!==token||e.error==='canceled'||e.error==='interrupted')return;setStatus('La voz se interrumpió. Pulsa Reproducir para intentarlo de nuevo.');};setStatus(`Leyendo página ${currentPage+1} de ${pages.length}…`);synth.speak(utterance);}
+$('play').addEventListener('click',()=>{if(!pages.length||!synth)return;stop();const run=token;parts=segment(pages[currentPage]);partIndex=0;if(!parts.length){setStatus('No hay texto extraíble en esta página. Prueba con otro PDF o uno con OCR.');return;}speakNext(run);});
+$('pause').addEventListener('click',()=>{if(synth?.speaking&&!synth.paused){synth.pause();setStatus('Lectura pausada.');}});
+$('resume').addEventListener('click',()=>{if(synth?.paused){synth.resume();setStatus('Lectura reanudada.');}});
+$('stop').addEventListener('click',()=>{stop();setStatus('Lectura detenida. Pulsa Reproducir para comenzar desde esta página.');});
+$('page').addEventListener('change',()=>{stop();currentPage=Number($('page').value);updatePreview();setStatus(`Página ${currentPage+1} seleccionada. Pulsa Reproducir.`);});
+window.addEventListener('pagehide',stop);
+</script>
+</body>
+</html>
